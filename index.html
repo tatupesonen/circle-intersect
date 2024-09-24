@@ -119,6 +119,7 @@
       <canvas id="circles" width="1280" height="768"></canvas>
     </div>
     <script>
+      const centerRadii = 100;
       const canvas = document.querySelector('#circles')
       const logElem = document.querySelector('#log')
       const ctx = canvas.getContext('2d');
@@ -136,10 +137,10 @@
         draw(canvas, ctx)
       })
 
-      const highlightIntersection = (center1, center2, radius, intersections) => {
+      const highlightIntersection = (center1, center2, radius, otherRadius, intersections) => {
         ctx.beginPath();
         ctx.moveTo(...intersections[0]);
-        ctx.arc(center1[0], center1[1], radius, Math.atan2(intersections[0][1] - center1[1], intersections[0][0] - center1[0]), Math.atan2(intersections[1][1] - center1[1], intersections[1][0] - center1[0]));
+        ctx.arc(center1[0], center1[1], otherRadius, Math.atan2(intersections[0][1] - center1[1], intersections[0][0] - center1[0]), Math.atan2(intersections[1][1] - center1[1], intersections[1][0] - center1[0]));
         ctx.lineTo(...intersections[1]);
         ctx.arc(center2[0], center2[1], radius, Math.atan2(intersections[1][1] - center2[1], intersections[1][0] - center2[0]), Math.atan2(intersections[0][1] - center2[1], intersections[0][0] - center2[0]));
         ctx.closePath();
@@ -152,11 +153,11 @@
         ctx.clearRect(0, 0, canvas.width, canvas.height);
 
         const centerCoords = [canvas.width / 2, canvas.height / 2];
-        createCircle(centerCoords, circleSize, "green");
+        createCircle(centerCoords, centerRadii, "green");
         createCircle(mousePos, circleSize, "red");
 
         // Check if circles intersect
-        const intersections = findCircleIntersections(centerCoords, circleSize, mousePos, circleSize);
+        const intersections = findCircleIntersections(centerCoords, centerRadii, mousePos, circleSize);
 
         if (intersections) {
           // Draw the intersection points
@@ -165,7 +166,7 @@
           });
 
           // Highlight the intersection area in blue
-          highlightIntersection(centerCoords, mousePos, circleSize, intersections);
+          highlightIntersection(centerCoords, mousePos, circleSize, centerRadii, intersections);
         }
 
         // draw line from cursor to center
