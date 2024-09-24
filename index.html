@@ -242,6 +242,9 @@
 
       const lineBetween = (from, to, text = "", color = "red", width = "8", dashed = false) => {
         ctx.beginPath();
+        ctx.strokeStyle = color
+        ctx.lineWidth = width;
+        ctx.strokeWidth = width;
         if (dashed) {
           ctx.setLineDash([15, 10]);
         } else {
@@ -249,8 +252,6 @@
         }
         ctx.moveTo(...from)
         ctx.lineTo(...to)
-        ctx.strokeStyle = color
-        ctx.lineWidth = width;
         ctx.stroke();
         ctx.closePath();
 
@@ -266,6 +267,7 @@
           ctx.fillText(text, betweenX, betweenY);
         }
         ctx.strokeStyle = "white"
+        ctx.lineWidth = width;
       }
 
       draw(canvas, ctx)
